@@ -12,7 +12,7 @@ calendar.key = config['apikey']
 calendarids = config['calendars']
 
 # Get today & tomorrow which is used for the range 
-today = Date.today
+today = Date.today + 2
 tomorrow = today + 1
 start_of_day = today.to_datetime.rfc3339
 end_of_day =  tomorrow.to_datetime.rfc3339
@@ -27,22 +27,26 @@ calendarids.each do |name, id|
 	 	time_max: end_of_day
 	)
 
-	entries.items.each do |item|
-		events << { 
-			start: item.start.date_time, 
-			summary: item.summary, 
-			description: item.description, 
-			location: item.location
-		}
+	unless entries.items.empty?
+		entries.items.each do |item|
+			events << { 
+				start: item.start.date_time, 
+				summary: item.summary, 
+				description: item.description, 
+				location: item.location
+			}
+		end
 	end
 end
 
-sorted = events.sort_by { |x| x[:start] }
+unless events.empty?
+	sorted = events.sort_by { |x| x[:start] }
 
-sorted.each do |event|
-	puts event[:summary]
-	puts event[:description]
-	puts event[:start]
-	puts event[:location]
-	puts "====="
+	sorted.each do |event|
+		puts event[:summary]
+		puts event[:description]
+		puts event[:start]
+		puts event[:location]
+		puts "====="
+	end
 end
