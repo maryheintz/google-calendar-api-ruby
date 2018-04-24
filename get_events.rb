@@ -12,7 +12,7 @@ calendar.key = config['apikey']
 calendarids = config['calendars']
 
 # Get today & tomorrow which is used for the range 
-today = Date.today + 2
+today = Date.today
 tomorrow = today + 1
 start_of_day = today.to_datetime.rfc3339
 end_of_day =  tomorrow.to_datetime.rfc3339
