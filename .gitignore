@@ -1,0 +1,8 @@
+# Don't save any mac-specific files
+.DS_Store
+*/.DS_Store
+
+# Don't save config file with API key in repo
+config/config.yml
+
+

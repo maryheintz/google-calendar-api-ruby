@@ -1,0 +1,7 @@
+# Do not store config info the the repository
+
+apikey: <your API key>
+
+calendars: &ARRAY
+  calendar1: <calendar1 id>
+  calendar2: <calendar2 id>
