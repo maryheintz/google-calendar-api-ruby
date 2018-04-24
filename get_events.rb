@@ -1,5 +1,6 @@
 require 'google/apis/calendar_v3'
 require 'yaml'
+require 'date'
 
 #Google::Apis.logger.level = Logger::DEBUG
 
@@ -10,14 +11,22 @@ calendar = Google::Apis::CalendarV3::CalendarService.new
 calendar.key = config['apikey']
 calendarids = config['calendars']
 
+# Get today & tomorrow which is used for the range 
+today = Date.today
+tomorrow = today + 1
+start_of_day = today.to_datetime.rfc3339
+end_of_day =  tomorrow.to_datetime.rfc3339
+puts start_of_day
+puts end_of_day
+
 events = Array.new
 
 calendarids.each do |name, id|
 	entries = calendar.list_events(id,
 		always_include_email: false,
 		single_events: true,
-		time_min: '2018-04-30T00:00:00-05:00',
-	 	time_max: '2018-04-30T23:59:59-05:00'
+		time_min: start_of_day,
+	 	time_max: end_of_day
 	)
 
 	entries.items.each do |item|
