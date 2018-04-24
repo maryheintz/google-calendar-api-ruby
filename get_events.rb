@@ -21,10 +21,10 @@ calendarids.each do |name, id|
 
 	entries.items.each do |item|
 		events << { 
-			summary: "#{item.summary}", 
-			description: "#{item.description}", 
-			start: "#{item.start.date_time}", 
-			location: "#{item.location}"
+			start: item.start.date_time, 
+			summary: item.summary, 
+			description: item.description, 
+			location: item.location
 		}
 	end
 end
