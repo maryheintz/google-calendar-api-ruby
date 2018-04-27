@@ -15,7 +15,7 @@ calendarids = config['calendars']
 today = Date.today
 tomorrow = today + 1
 start_of_day = today.to_datetime.rfc3339
-end_of_day =  tomorrow.to_datetime.rfc3339
+end_of_day = start_of_day.gsub("T00:00","T23:59")
 
 events = Array.new
 
@@ -26,7 +26,7 @@ calendarids.each do |name, id|
 		time_min: start_of_day,
 	 	time_max: end_of_day
 	)
-
+	
 	unless entries.items.empty?
 		entries.items.each do |item|
 			events << { 
@@ -42,11 +42,16 @@ end
 unless events.empty?
 	sorted = events.sort_by { |x| x[:start] }
 
-	sorted.each do |event|
-		puts event[:summary]
-		puts event[:description]
-		puts event[:start]
-		puts event[:location]
-		puts "====="
+	open('today.html', 'w') do |f|
+		sorted.each do |event|
+			f.puts "<span class='left'>#{event[:start].strftime("%-l:%M %p")}</span><span class='right'>#{event[:location]}</span>"
+			f.puts "#{event[:summary]}"
+			f.puts "<hr />"
+			# puts event[:summary]
+			# #puts event[:description]
+			# puts event[:start].strftime("%-l:%M %p")
+			# puts event[:location]
+			# puts "====="
+		end
 	end
 end
