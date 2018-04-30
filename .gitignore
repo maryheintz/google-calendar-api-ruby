@@ -5,4 +5,7 @@
 # Don't save config file with API key in repo
 config/config.yml
 
+physics-pics.txt
+today.html
+upcoming.html
 
