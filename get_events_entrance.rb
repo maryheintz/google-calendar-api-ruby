@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 require 'google/apis/calendar_v3'
 require 'yaml'
 require 'date'
