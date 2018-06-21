@@ -67,7 +67,7 @@ calendarids.each do |name, id|
 	end
 end
 
-open('today.html', 'w') do |f|
+open('../today.html', 'w') do |f|
 	if events.empty?
 		# Get list of files need help identifying
 		pics = File.readlines("#{HOME}/scripts/physics-pics.txt")
@@ -125,7 +125,7 @@ se email maryh@hep.uchicago.edu about image ##{pic_id}.</p></div>"
 	end
 end
 
-open('upcoming.html','w') do |f|
+open('../upcoming.html','w') do |f|
 	sorted = upcoming.sort_by { |x| x[:start] }
 	f.puts "<div class='todaytitle'>UPCOMING EVENTS</div>"
 	sorted.each do |event|
