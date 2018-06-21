@@ -69,9 +69,44 @@ end
 
 open('today.html', 'w') do |f|
 	if events.empty?
-		f.puts "<div class='todaytitle'>UCHICAGO PHYSICS HISTORY</div>"
-		f.puts "<img src='http://physics-pics.uchicago.edu/images/1248/medium/IMG_0038.jpg' alt='Physicists in Action' class='img-responsive' />"
-		f.puts "<p>If you can identify any people in this picture, please email maryh@hep.uchicago.edu about image #1248.</p>"
+		# Get list of files need help identifying
+		pics = File.readlines("#{HOME}/scripts/physics-pics.txt")
+		sample = pics.sample
+		pic = sample.split(', ')
+		pic_id = pic[0]
+		pic_url = pic[1].chomp
+
+		# Get list of files of old pics we know about
+		historical = File.readlines("#{HOME}/scripts/historical.txt")
+		historical_sample = historical.sample
+		historical_pic = historical_sample.split(', ')
+		hist_id = historical_pic[0]
+		hist_url = historical_pic[1]
+		hist_caption = historical_pic[2].chomp
+
+		# Get list of files in faculty that may show
+		faculty = Array.new
+		fac_caption = Array.new
+		people = Dir.glob("#{HOME}/html/faculty/*txt")
+		people.each do |fac|
+		  temp = fac.split('.')
+		  name = temp[0].slice(22..-1)
+		  faculty << name
+		end
+		fac_pic = faculty.sample(2)
+		fac_caption[0] = File.read("#{HOME}/html/faculty/#{fac_pic[0]}.txt")
+		fac_caption[1] = File.read("#{HOME}/html/faculty/#{fac_pic[1]}.txt")
+
+		f.puts "<div class='todaytitle'>UCHICAGO PHYSICS</div>"
+		f.puts "<div id=\"physicsCarousel\" class='carousel slide carousel-fade' data-ride='carousel' data-interval='30000'>"
+		f.puts "<div class='carousel-inner'>"
+		f.puts "<div class='item active'><img src=\"#{pic_url}\" alt='Physicists in Action' class='img-responsive' /><p>If you can tell us anything about this picture, plea
+se email maryh@hep.uchicago.edu about image ##{pic_id}.</p></div>"
+		f.puts "<div class='item'><img src=\"\/faculty\/#{fac_pic[0]}.jpg\" alt='#{fac_pic}' class='img-responsive' /><p>#{fac_caption[0]}</p></div>"
+		f.puts "<div class='item'><img src=\"#{hist_url}\" alt='historical picture' class='img-responsive' /><p>#{hist_caption}</p></div>"
+		f.puts "<div class='item'><img src=\"\/faculty\/#{fac_pic[1]}.jpg\" alt='#{fac_pic}' class='img-responsive' /><p>#{fac_caption[1]}</p></div>"
+		f.puts "</div>"
+		f.puts "</div>"
 	else
 		sorted = events.sort_by { |x| x[:start] }
 
