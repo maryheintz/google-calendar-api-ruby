@@ -2,7 +2,7 @@ require 'google/apis/calendar_v3'
 require 'yaml'
 require 'date'
 
-#Google::Apis.logger.level = Logger::DEBUG
+Google::Apis.logger.level = Logger::DEBUG
 
 # Get config info
 config = YAML.load_file("config/config.yml")
@@ -11,12 +11,13 @@ calendar = Google::Apis::CalendarV3::CalendarService.new
 calendar.key = config['apikey']
 calendarids = config['calendars']
 
-# Get today & tomorrow which is used for the range 
-today = Date.today
-tomorrow = today + 1
-nextweek = today + 8
-start_of_day = today.to_datetime.rfc3339
-end_of_day = start_of_day.gsub("T00:00","T23:59")
+# Get range of dates for which we want to get events
+localtime = Time.now.getlocal
+today = localtime.to_date
+last_upcoming_event_date = today + 8
+start_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT00:00:00%z"))
+end_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT23:59:00%z"))
+last_upcoming_event = DateTime.parse(last_upcoming_event_date.strftime("%Y-%m-%dT23:59:59%z"))
 
 events = Array.new
 upcoming = Array.new
@@ -24,14 +25,14 @@ upcoming = Array.new
 calendarids.each do |name, id|
 	entries = calendar.list_events(id,
 		single_events: true,
-		time_min: start_of_day,
-	 	time_max: end_of_day
+		time_min: start_of_day.rfc3339,
+	 	time_max: end_of_day.rfc3339
 	)
 
 	 upcoming_entries = calendar.list_events(id,
 		single_events: true,
-		time_min: tomorrow.to_datetime.rfc3339,
-		time_max: nextweek.to_datetime.rfc3339
+		time_min: end_of_day.rfc3339,
+		time_max: last_upcoming_event.rfc3339
 	)
 
 	unless entries.items.empty?
