@@ -18,7 +18,7 @@ today = localtime.to_date
 tomorrow_date = Time.now.getlocal + 86400 # Have to add seconds when working with time 86400 = 60 secs * 60 min * 24 hours
 last_upcoming_event_date = today + 8
 start_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT00:00:00%z"))
-end_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT23:59:00%z"))
+end_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT23:59:59%z"))
 tomorrow = DateTime.parse(tomorrow_date.strftime("%Y-%m-%dT00:00:00%z"))
 last_upcoming_event = DateTime.parse(last_upcoming_event_date.strftime("%Y-%m-%dT23:59:59%z"))
 
