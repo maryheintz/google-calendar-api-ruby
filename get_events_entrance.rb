@@ -17,7 +17,7 @@ calendarids = config['calendars']
 localtime = Time.now.getlocal
 today = localtime.to_date
 tomorrow_date = Time.now.getlocal + 86400 # Have to add seconds when working with time 86400 = 60 secs * 60 min * 24 hours
-last_upcoming_event_date = today + 8
+last_upcoming_event_date = today + 15
 start_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT00:00:00%z"))
 end_of_day = DateTime.parse(localtime.strftime("%Y-%m-%dT23:59:59%z"))
 tomorrow = DateTime.parse(tomorrow_date.strftime("%Y-%m-%dT00:00:00%z"))
@@ -113,15 +113,15 @@ se email maryh@hep.uchicago.edu about image ##{pic_id}.</p></div>"
 
 		f.puts "<div class='todaytitle'>TODAY'S EVENTS</div>"
 		sorted.each do |event|
+			f.puts "<div class='timeroom'>"
 			if (event[:start].strftime("%-l:%M %p") == "12:00 AM")
 				f.puts "<span class='left'>All Day</span><span class='right'>#{event[:location]}</span>"
-				f.puts "#{event[:summary]}"
-				f.puts "<hr />"
 			else
 				f.puts "<span class='left'>#{event[:start].strftime("%-l:%M %p")}</span><span class='right'>#{event[:location]}</span>"
-				f.puts "#{event[:summary]}"
-				f.puts "<hr />"
 			end
+			f.puts "</div>"
+			f.puts "<div class='summary'>#{event[:summary]}</div>"
+			f.puts "<hr />"
 		end
 	end
 end
