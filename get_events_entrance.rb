@@ -4,10 +4,12 @@ require 'yaml'
 require 'date'
 require 'time'
 
+HOME="/var/www"
+
 #Google::Apis.logger.level = Logger::DEBUG
 
 # Get config info
-config = YAML.load_file("config/config.yml")
+config = YAML.load_file("#{HOME}/scripts/config/config.yml")
 
 calendar = Google::Apis::CalendarV3::CalendarService.new
 calendar.key = config['apikey']
@@ -68,7 +70,7 @@ calendarids.each do |name, id|
 	end
 end
 
-open('../html/today.html', 'w') do |f|
+open('#{HOME}/html/today.html', 'w') do |f|
 	if events.empty?
 		# Get list of files need help identifying
 		pics = File.readlines("#{HOME}/scripts/physics-pics.txt")
@@ -126,7 +128,7 @@ se email maryh@hep.uchicago.edu about image ##{pic_id}.</p></div>"
 	end
 end
 
-open('../html/upcoming.html','w') do |f|
+open('#{HOME}/html/upcoming.html','w') do |f|
 	sorted = upcoming.sort_by { |x| x[:start] }
 	f.puts "<div class='todaytitle'>UPCOMING EVENTS</div>"
 	sorted.each do |event|
