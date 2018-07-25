@@ -8,7 +8,7 @@ HOME="/var/www"
 
 #Google::Apis.logger.level = Logger::DEBUG
 
-# Get config info
+# Get config info 
 config = YAML.load_file("#{HOME}/scripts/config/config.yml")
 
 calendar = Google::Apis::CalendarV3::CalendarService.new
